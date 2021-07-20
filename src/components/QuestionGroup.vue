@@ -115,15 +115,11 @@
             <div class="button-container">
                 <button @click="submit">계산하러 가기</button>
             </div>
-            
-
-            <Developer />
         </div>
 
 </div>
 </template>
 <script>
-import Developer from '@/components/Developer.vue'
 export default {
     props: ["userInput", "targetHouse"],
     methods: {
@@ -133,7 +129,6 @@ export default {
     },
     name: 'QuestionGroup',
     components: {
-        Developer,
     },
 }
 </script>

@@ -29,10 +29,10 @@ export default {
 }
 .intro-container {
     max-width: 750px;
+    padding: 15px;
 }
 .intro-a-container p{
     font-size: 20px;
-    padding: 5px;
     padding-bottom: 20px;
     text-align: center;
     font-weight: 500;

@@ -4,7 +4,8 @@
         <div v-if="submitted">
             <Result 
                 :result="result"
-                :targetHouse="targetHouse"/>
+                :targetHouse="targetHouse"
+                @resubmit="resubmit"/>
         </div>
         <div v-else>
             <Intro />
@@ -13,10 +14,12 @@
                 :targetHouse="targetHouse"
                 @submit="submit"/>
         </div>
+        <Developer />
     </div>
 </template>
 <script>
 import Banner from '@/components/Banner.vue'
+import Developer from '@/components/Developer.vue'
 import Intro from '@/components/Intro.vue'
 import QuestionGroup from '@/components/QuestionGroup.vue'
 import Result from '@/components/Result.vue'
@@ -24,12 +27,17 @@ import Result from '@/components/Result.vue'
 export default {
     methods: {
         submit() {
+            this.submitted = false
             console.log(this.userInput, this.targetHouse)
-            this.submitted = true
 
-            // const targetHousePrice = this.getTargetHousePrice(userInput["city"], userInput["district"])
-            // const targetHousePrice = this.getTargetHousePrice()
             this.calculate()
+            this.getLottoResult()
+            this.getInvestResult()
+            this.submitted = true
+        },
+        resubmit() {
+            console.log('here')
+            this.submitted = false
         },
         calculate() {
             const UNIT_OF_MONEY = 10000
@@ -41,7 +49,7 @@ export default {
             let month = 1
             let gotResult = false
             
-            while (year < 10) {
+            while (year < 100) {
                 let monthlyIncome = yearlyIncomeWithIncrease / 12.0
 
                 let yearlyInvestment = this.userInput["monthlyInvestment"] * UNIT_OF_MONEY * 12.0
@@ -75,10 +83,40 @@ export default {
 
             if (year == 100) {
                 console.log("주택 구입에 100년이 더 넘게 소요됨.")
+                this.result["canBuyHouse"] = false
             }
 
             this.result["year"] = year
             this.result["month"] = month
+        },
+        getLottoResult() {
+            if (this.userInput["lottoSelect"] > 0) {
+                // Calculate the percentage of the lotto winning
+                this.result["buyLotto"] = true
+
+                if (this.userInput["lottoHope"] == true) {
+                    // Add some luck
+                }
+            } else {
+                this.result["buyLotto"] = false
+            }
+            // buyLotto: false,
+            // winLotto: false,
+        },
+        getInvestResult() {
+            if (this.userInput["investHope"] == true) {
+                this.result["doInvest"] = true
+
+                if  (Math.floor(Math.random() * 100) == 1) {
+                    this.result["winInvest"] = true
+                } else {
+                    this.result["winInvest"] = false
+                }
+            } else {
+                this.result["doInvest"] = false
+            }
+            // doInvest: false,
+            // winInvest: false,
         }
     },
     name: "Test",
@@ -87,6 +125,7 @@ export default {
         Intro,
         QuestionGroup,
         Result,
+        Developer,
     },
     data() {
         return {
@@ -112,6 +151,11 @@ export default {
             result: {
                 year: 0,
                 month: 0,
+                buyLotto: false,
+                winLotto: false,
+                doInvest: false,
+                winInvest: false,
+                canBuyHouse: false,
             },
             submitted: false,
             

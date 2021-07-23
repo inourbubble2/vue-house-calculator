@@ -12,6 +12,7 @@
             <QuestionGroup 
                 :userInput="userInput"
                 :targetHouse="targetHouse"
+                :house="house"
                 @submit="submit"/>
         </div>
         <Developer />
@@ -26,11 +27,23 @@ import Result from '@/components/Result.vue'
 import axios from 'axios'
 
 export default {
+    name: "Test",
+    components: {
+        Banner,
+        Intro,
+        QuestionGroup,
+        Result,
+        Developer,
+    },
+    mounted() {
+        axios.get("https://inourbubble2.github.io/house-calculator/static/house.json").then(response => (this.house = response.data))
+    },
     methods: {
+        getDistricts(city) {
+            return Object.keys(this.house[city])
+        },
         submit() {
             this.submitted = false
-            console.log(this.userInput, this.targetHouse)
-
             this.getHousePrice()
             this.calculate()
             this.getLottoResult()
@@ -120,42 +133,15 @@ export default {
             // doInvest: false,
             // winInvest: false,
         },
-        async apiRequest(method, url, data) {
-            const requestData = {
-                method: method.toLowerCase(),
-                url,
-                withCredentials: true,
-                validateStatus () {
-                    return true
-                }
-            }
-            if (requestData.method === 'get' || requestData.method === 'delete') {
-                if (!data) {
-                data = {}
-                }
-                requestData.params = { ...data, currentTime: Date.now() }
-            } else {
-                requestData.data = data
-            }
-            const res = await axios(requestData)
-            return res
-        },
         async getHousePrice() {
-            var requestURL = "https://house-calculator.netlify.app/static/house.json"
-            const res = this.apiRequest('GET', requestURL)
-            console.log(res)
+            // var requestURL = "https://house-calculator.netlify.app/static/house.json"
+            // const res = await this.apiRequest('GET', requestURL)
+            // console.log(res)
         },
-    },
-    name: "Test",
-    components: {
-        Banner,
-        Intro,
-        QuestionGroup,
-        Result,
-        Developer,
     },
     data() {
         return {
+            house: {},
             userInput: {
                 cash: 0,
                 investment: 0,
@@ -171,9 +157,9 @@ export default {
             },
             targetHouse: {
                 city: '서울',
-                district: '도봉구',
+                district: '강남구',
                 size: 25,
-                price: 700000000,
+                price: 0,
             },
             result: {
                 year: 0,

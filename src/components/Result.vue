@@ -16,7 +16,7 @@
         <div class="form">
             <div class="container">
                 <div class="item">
-                    <h3>{{targetHouse["city"]}} {{targetHouse["district"]}} {{targetHouse["size"]}}평대 아파트의 평균 시세는 {{targetHouse["price"] / 100000000}}억원이네요!</h3>
+                    <h3>{{targetHouse["city"]}} {{targetHouse["district"]}} {{targetHouse["size"]}}평대 아파트의 평균 시세는 {{targetHouse["price"]}}억 원이네요!</h3>
                     <p>&#128161; 2020년 7월 국토부 실거래가 평균을 바탕으로 한 자료입니다.</p>
                 </div>
             </div>
@@ -98,7 +98,7 @@
 export default {
     props: ["result", "targetHouse"],
     created() {
-        console.log(this.result);
+        console.log(this.targetHouse['price']);
     },
     methods: {
         share() {

@@ -82,34 +82,21 @@
                 <h3>당신이 원하는 집</h3>
                     <div class="item">
                     <label>나는 </label>
-                    <select v-model.trim="targetHouse['city']" id="city" name="city" onchange="select_city()">
-                        <option value="서울">서울</option>
-                        <option value="경기">경기</option>
-                        <option value="부산">부산</option>
-                        <option value="세종">세종</option>
-                        <option value="대구">대구</option>
-                        <option value="제주">제주</option>
-                        <option value="인천">인천</option>
-                        <option value="대전">대전</option>
-                        <option value="울산">울산</option>
-                        <option value="광주">광주</option>
-                        <option value="경남">경남</option>
-                        <option value="충남">충남</option>
-                        <option value="전남">전남</option>
-                        <option value="강원">강원</option>
-                        <option value="전북">전북</option>
-                        <option value="충북">충북</option>
-                        <option value="경북">경북</option>
+                    <select v-model.trim="targetHouse['city']" id="city" name="city" @change="changeCity">
+                        <option :key="item" v-for="item in Object.keys(house)"> {{item}} </option>
                     </select>
                     <label>의</label>
                     
-                    <select v-model.trim="targetHouse['district']" id="district" name="district"></select>
+                    <select v-model.trim="targetHouse['district']" id="district" name="district">
+                        <option :key="item" v-for="item in Object.keys(house[targetHouse['city']])"> {{item}} </option>
+                    </select>
                     <label>의</label>
 
                     <p></p>
                     <input v-model.number="targetHouse['size']" type="radio" name="home_size" value=25><label>25평대</label>
                     <input v-model.number="targetHouse['size']" type="radio" name="home_size" value=32><label>32평대</label>
-                    <label>아파트에서 거주하고 싶어요.</label>
+                    <label>아파트에서 거주하고 싶어요. </label>
+                    <label style='color:gray'>평균 시세: {{house[targetHouse['city']][targetHouse['district']][targetHouse['size']] }}억 원 </label>
                 </div>
             </div>
             <div class="button-container">
@@ -121,15 +108,19 @@
 </template>
 <script>
 export default {
-    props: ["userInput", "targetHouse"],
+    props: ["userInput", "targetHouse", "house"],
+    mounted() {
+    },
     methods: {
+        changeCity() {
+            this.targetHouse['district'] = Object.keys(this.house[this.targetHouse['city']])[0]
+        },
         submit() {
-            this.$emit("submit", this.userInput);
+            this.targetHouse['price'] = this.house[this.targetHouse['city']][this.targetHouse['district']][this.targetHouse['size']]
+            this.$emit("submit");
         }
     },
-    name: 'QuestionGroup',
-    components: {
-    },
+    name: 'QuestionGroup'
 }
 </script>
 <style lang="scss">

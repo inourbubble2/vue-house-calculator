@@ -23,6 +23,7 @@ import Developer from '@/components/Developer.vue'
 import Intro from '@/components/Intro.vue'
 import QuestionGroup from '@/components/QuestionGroup.vue'
 import Result from '@/components/Result.vue'
+import axios from 'axios'
 
 export default {
     methods: {
@@ -30,6 +31,7 @@ export default {
             this.submitted = false
             console.log(this.userInput, this.targetHouse)
 
+            this.getHousePrice()
             this.calculate()
             this.getLottoResult()
             this.getInvestResult()
@@ -117,7 +119,32 @@ export default {
             }
             // doInvest: false,
             // winInvest: false,
-        }
+        },
+        async apiRequest(method, url, data) {
+            const requestData = {
+                method: method.toLowerCase(),
+                url,
+                withCredentials: true,
+                validateStatus () {
+                    return true
+                }
+            }
+            if (requestData.method === 'get' || requestData.method === 'delete') {
+                if (!data) {
+                data = {}
+                }
+                requestData.params = { ...data, currentTime: Date.now() }
+            } else {
+                requestData.data = data
+            }
+            const res = await axios(requestData)
+            return res
+        },
+        async getHousePrice() {
+            var requestURL = "https://house-calculator.netlify.app/static/house.json"
+            const res = this.apiRequest('GET', requestURL)
+            console.log(res)
+        },
     },
     name: "Test",
     components: {

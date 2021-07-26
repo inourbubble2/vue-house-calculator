@@ -3,7 +3,7 @@
         <div class="intro">
             <div class="intro-container">
                 <div class="intro-a-container" v-if='result["canBuyHouse"]'>
-                    <h2> {{targetHouse["city"]}}  {{targetHouse["city"]}}의 아파트를 사려면 </h2>
+                    <h2> {{targetHouse["city"]}}  {{targetHouse["district"]}}의 아파트를 사려면 </h2>
                         <h2>{{result["year"]}}년 {{result["month"]}}개월이 필요합니다. &#127968;</h2>
                 </div>
                 <div class="intro-a-container" v-else>
@@ -29,23 +29,21 @@
             </div> -->
             
             <div v-if="result['buyLotto']">
-                <div class="container">
+                <div v-if="result['winLotto']" class="container">
                     <div class="item">
                         <h3>로또 당첨?</h3>
                         <h4>운이 좋으시네요! 당첨될 만한 분이신가봐요!</h4>
-                        <p><label class="took_year">#</label>년 <label class="took_month">#</label>개월 동안 총 <label class="lotto_total_count">#</label>장의 로또를 샀을 때 당첨될 확률 만큼 랜덤한 숫자를 뽑아 당첨인지 계산해보았답니다.</p>
-                        <p>특별한 운이 있다고 체크하셔서 실제 로또 확률에서 0.01%를 더한 결과 값이에요.</p>
+                        <p>{{result["year"]}}년 {{result["month"]}}개월 동안 약 총 {{result["lottoCount"]}}장의 로또를 샀을 때 당첨될 확률 만큼 랜덤한 숫자를 뽑아 당첨인지 계산해보았답니다.</p>
                         <p>물론 실제로 당첨이 된 건 아니지만, 이 어마무시한 확률을 뚫은 당신이니 실제로도 당첨될지도 모르죠!</p>
                     </div>
                 </div>
 
-                <div class="container">
+                <div v-else class="container">
                     <div class="item">
                         <h3>로또 당첨?</h3>
-                        <h4> 아쉽게도 <b>당첨이 되지 않았어요.</b> </h4>
-                        <p><label class="took_year">#</label>년 <label class="took_month">#</label>개월 동안 총 <label class="lotto_total_count">#</label>장의 로또를 샀을 때 당첨될 확률 만큼 랜덤한 숫자를 뽑아 당첨인지 계산해보았답니다.</p>
-                        <p>특별한 운이 있다고 체크하셔서 실제 로또 확률에서 0.01%를 더한 결과 값이에요.</p>
-                        <p>하지만 인생은 알 수 없는 법! 다음 주의 1등이 당신이 될지도 모르죠!</p>
+                        <h4>시뮬레이션 상 당첨이 되지 않았어요. </h4>
+                        <p>{{result["year"]}}년 {{result["month"]}}개월 동안 총 약 {{result["lottoCount"]}}장의 로또를 샀을 때 당첨될 확률 만큼 랜덤한 숫자를 뽑아 당첨인지 계산해보았답니다.</p>
+                        <p>하지만 인생은 알 수 없는 법! 다음 주 1등이 당신이 될지도 모르죠!</p>
                     </div>
                 </div>
             </div>
@@ -68,7 +66,7 @@
                         <p>전업투자자 중 단 1%만이 성공한다는 속설에 기반해서 당신이 그 1%인지를 판별하는 랜덤한 숫자를 뽑아보았어요.</p>
                         <p>아쉽게도 그 1%는 아니네요.</p>
                         <p>하지만 고작 컴퓨터가 무작위로 뽑은 숫자가 의미가 있을까요? </p>
-                        <p>당신의 투자 실력이라면 언젠가 상한가를 맞이할 거라고 믿어요!</p>
+                        <p>당신의 투자 실력이라면 언젠가 성공할 거라고 믿어요!</p>
                     </div>
                 </div>
             </div>
@@ -109,7 +107,6 @@ export default {
             else
                 share_text `${this.targetHouse["city"]} ${this.targetHouse["district"]} 의 ${this.targetHouse["size"]}평대 아파트를 사려면 100년이 더 넘는 기간이 걸려요...`
             
-            window.alert(window.navigator.share)
             if (navigator.share) {
                navigator.share({
                     title: share_title,

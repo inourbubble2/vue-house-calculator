@@ -64,8 +64,10 @@
                         <option value="30">한 달</option>
                         <option value="0">안 사요.</option>
                     </select>
-                    <label class="lotto_none">간격으로</label> 
-                    <input v-model.number="userInput['lottoCount']" id="lotto_count" type="number" class="lotto_none" value=0> <label class="lotto_none">장 삽니다.</label>
+                    <div v-if="userInput['lottoSelect'] != 0">
+                        <label class="lotto_none">간격으로</label> 
+                        <input v-model.number="userInput['lottoCount']" id="lotto_count" type="number" class="lotto_none" value=0> <label class="lotto_none">장 삽니다.</label>
+                    </div>
                 </div>
                 <div class="item">
                     <p>나는 아주 아주 특별한 운이 있어서 언젠가 꼭 로또 당첨이 될 것 같아요!</p>

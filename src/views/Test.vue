@@ -44,14 +44,12 @@ export default {
         },
         submit() {
             this.submitted = false
-            this.getHousePrice()
             this.calculate()
             this.getLottoResult()
             this.getInvestResult()
             this.submitted = true
         },
         resubmit() {
-            console.log('here')
             this.submitted = false
         },
         calculate() {
@@ -65,6 +63,7 @@ export default {
             let gotResult = false
             
             while (year < 100) {
+                console.log(cash, investment, this.targetHouse['price'] * UNIT_OF_MONEY * UNIT_OF_MONEY)
                 let monthlyIncome = yearlyIncomeWithIncrease / 12.0
 
                 let yearlyInvestment = this.userInput["monthlyInvestment"] * UNIT_OF_MONEY * 12.0
@@ -77,7 +76,7 @@ export default {
                     cash -= this.userInput["monthlyInvestment"] * UNIT_OF_MONEY
                     investment += monthlyInvestmentWithReturn
 
-                    if (!gotResult && cash + investment > this.targetHouse["price"]) {
+                    if (cash + investment > this.targetHouse["price"] * UNIT_OF_MONEY * UNIT_OF_MONEY) {
                         gotResult = true
                         break
                     }
@@ -98,7 +97,10 @@ export default {
 
             if (year == 100) {
                 console.log("주택 구입에 100년이 더 넘게 소요됨.")
+                month = 0
                 this.result["canBuyHouse"] = false
+            } else {
+                this.result["canBuyHouse"] = true
             }
 
             this.result["year"] = year
@@ -108,9 +110,14 @@ export default {
             if (this.userInput["lottoSelect"] > 0) {
                 // Calculate the percentage of the lotto winning
                 this.result["buyLotto"] = true
-
+                this.result["lottoCount"] = parseInt((this.result["year"] * 365 + this.result["month"] * 30) / this.userInput["lottoSelect"] * this.userInput["lottoCount"])
+                let lottoPercent = 1 / 8145060
                 if (this.userInput["lottoHope"] == true) {
                     // Add some luck
+                    lottoPercent += 0.01
+                }
+                if (lottoPercent > Math.random()) {
+                    this.result["winLotto"] = true
                 }
             } else {
                 this.result["buyLotto"] = false
@@ -132,11 +139,6 @@ export default {
             }
             // doInvest: false,
             // winInvest: false,
-        },
-        async getHousePrice() {
-            // var requestURL = "https://house-calculator.netlify.app/static/house.json"
-            // const res = await this.apiRequest('GET', requestURL)
-            // console.log(res)
         },
     },
     data() {
@@ -166,6 +168,7 @@ export default {
                 month: 0,
                 buyLotto: false,
                 winLotto: false,
+                lottoCount: 0,
                 doInvest: false,
                 winInvest: false,
                 canBuyHouse: false,

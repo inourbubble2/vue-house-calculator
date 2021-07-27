@@ -98,24 +98,29 @@
 export default {
     props: ["result", "targetHouse"],
     methods: {
-        share() {
+        async share() {
             const share_title =  `내집마련 계산기를 해보았어요!`
-            let share_text = ``
+            let share_text = ''
             if(this.result["canByHouse"])
-                share_text = `${this.targetHouse["city"]} ${this.targetHouse["district"]} 의 ${this.targetHouse["size"]}평대 아파트를 사려면 ${this.result["year"]}년 ${this.result["month"]}개월이 걸리네요. from `
+                share_text = this.targetHouse["city"] + " " + this.targetHouse["district"]  + "의 " + this.targetHouse["size"] + "평대 아파트를 사려면 " 
+                + this.result["year"] + "년 "+ this.result["month"] + " 개월이 걸리네요. from "
             else
-                share_text `${this.targetHouse["city"]} ${this.targetHouse["district"]} 의 ${this.targetHouse["size"]}평대 아파트를 사려면 100년이 더 넘는 기간이 걸려요...`
+                share_text = this.targetHouse["city"] + " " + this.targetHouse["district"]  + "의 " + this.targetHouse["size"] + "평대 아파트를 사려면 " 
+                + " 100년이 넘는 기간이 걸려요... from "
             
             if (navigator.share) {
-               navigator.share({
-                    title: share_title,
-                    text: share_text,
-                    url: '',
-                })
-                .then(() => {
-                    console.log('Thanks for sharing!')
-                })
-                .catch(console.error)
+                try {
+                    await navigator.share({
+                        title: share_title,
+                        text: share_text,
+                        url: '',
+                    })
+                    .then(() => {
+                        console.log('Thanks for sharing!')
+                    })
+                } catch(e) {
+                    console.error(e)
+                }
             } else {
                 // TODO("Mobile share feature")
             }

@@ -33,6 +33,7 @@
                     <div class="item">
                         <h3>로또 당첨?</h3>
                         <h4>운이 좋으시네요! 당첨될 만한 분이신가봐요!</h4>
+                        <p> 로또 1등에 당첨될 확률은 대략 1/8145060% 라고 해요. </p>
                         <p>{{result["year"]}}년 {{result["month"]}}개월 동안 약 총 {{result["lottoCount"]}}장의 로또를 샀을 때 당첨될 확률 만큼 랜덤한 숫자를 뽑아 당첨인지 계산해보았답니다.</p>
                         <p>물론 실제로 당첨이 된 건 아니지만, 이 어마무시한 확률을 뚫은 당신이니 실제로도 당첨될지도 모르죠!</p>
                     </div>
@@ -42,6 +43,7 @@
                     <div class="item">
                         <h3>로또 당첨?</h3>
                         <h4>시뮬레이션 상 당첨이 되지 않았어요. </h4>
+                        <p> 로또 1등에 당첨될 확률은 대략 1/8145060% 라고 해요. </p>
                         <p>{{result["year"]}}년 {{result["month"]}}개월 동안 총 약 {{result["lottoCount"]}}장의 로또를 샀을 때 당첨될 확률 만큼 랜덤한 숫자를 뽑아 당첨인지 계산해보았답니다.</p>
                         <p>하지만 인생은 알 수 없는 법! 다음 주 1등이 당신이 될지도 모르죠!</p>
                     </div>
@@ -95,9 +97,6 @@
 <script>
 export default {
     props: ["result", "targetHouse"],
-    created() {
-        console.log(this.targetHouse['price']);
-    },
     methods: {
         share() {
             const share_title =  `내집마련 계산기를 해보았어요!`

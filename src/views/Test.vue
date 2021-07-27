@@ -63,7 +63,6 @@ export default {
             let gotResult = false
             
             while (year < 100) {
-                console.log(cash, investment, this.targetHouse['price'] * UNIT_OF_MONEY * UNIT_OF_MONEY)
                 let monthlyIncome = yearlyIncomeWithIncrease / 12.0
 
                 let yearlyInvestment = this.userInput["monthlyInvestment"] * UNIT_OF_MONEY * 12.0
@@ -108,25 +107,25 @@ export default {
         },
         getLottoResult() {
             if (this.userInput["lottoSelect"] > 0) {
-                // Calculate the percentage of the lotto winning
                 this.result["buyLotto"] = true
                 this.result["lottoCount"] = parseInt((this.result["year"] * 365 + this.result["month"] * 30) / this.userInput["lottoSelect"] * this.userInput["lottoCount"])
-                let lottoPercent = 1 / 8145060
-                if (this.userInput["lottoHope"] == true) {
-                    // Add some luck
+                let lottoPercent = (1 / 8145060) * this.result['lottoCount']
+
+                if (this.userInput["lottoHope"]) {
                     lottoPercent += 0.01
                 }
-                if (lottoPercent > Math.random()) {
+                var x = Math.random()
+                if (lottoPercent > x) {
                     this.result["winLotto"] = true
+                } else {
+                    this.result["winLotto"] = false
                 }
             } else {
                 this.result["buyLotto"] = false
             }
-            // buyLotto: false,
-            // winLotto: false,
         },
         getInvestResult() {
-            if (this.userInput["investHope"] == true) {
+            if (this.userInput["investHope"]) {
                 this.result["doInvest"] = true
 
                 if  (Math.floor(Math.random() * 100) == 1) {
@@ -137,8 +136,6 @@ export default {
             } else {
                 this.result["doInvest"] = false
             }
-            // doInvest: false,
-            // winInvest: false,
         },
     },
     data() {
